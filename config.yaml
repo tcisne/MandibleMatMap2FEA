@@ -1,0 +1,54 @@
+# MandibleMatMap2FEA Configuration File
+
+input:
+  # Image data (DICOM or TIFF)
+  dicom_dir: "input/segmented_dicom"  # Path to DICOM directory
+  # image_path: "input/tiff_stack"    # Alternative: Path to TIFF stack or directory
+  # image_type: "dicom"               # Optional: "dicom" or "tiff" (auto-detected if not specified)
+  
+  # Grey value to HU conversion (for TIFF files)
+  convert_grey: false                 # Whether to convert grey values to HU
+  # grey_min: null                    # Minimum grey value (null = auto-detect)
+  # grey_max: null                    # Maximum grey value (null = auto-detect)
+  hu_min: -1000                       # Minimum HU value (air)
+  hu_max: 3000                        # Maximum HU value (dense bone/enamel)
+  
+  # Mesh data
+  mandible_mesh: "input/mandible_sur_mesh.stl"  # Path to surface mesh file (STL, OBJ, STEP, etc.)
+
+mesh_processing:
+  element_size: 0.3                   # Target element size in mm
+  mesh_type: "tet"                    # Mesh type (currently only "tet" supported)
+  quality_threshold: 0.1              # Minimum element quality (0-1)
+
+material_mapping:
+  calibration:
+    air:
+      hu: -1000
+      density: 0.001                  # g/cm³
+    dentin:
+      hu: 2000
+      density: 2.14                   # g/cm³
+    enamel:
+      hu: 3000
+      density: 2.8                    # g/cm³
+  power_law:
+    cortical:
+      a: 2017.3                       # Coefficient
+      b: 2.5                          # Exponent
+    trabecular:
+      a: 1157.1                       # Coefficient
+      b: 1.78                         # Exponent
+    air:
+      a: 0.001                        # Coefficient
+      b: 1.0                          # Exponent
+
+fea_export:
+  output_file: "output/mandible_simulation.inp"
+  element_type: "C3D4"                # Linear tetrahedral
+
+visualization:
+  enabled: true
+  output_file: "output/visualization.png"
+  colormap: "bone"
+  property: "elastic_modulus"         # Alternative: "density"
