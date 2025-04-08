@@ -1,0 +1,14 @@
+material_properties:
+  cortical:
+    density_range: [1.8, 2.1]  # g/cm³
+    E: 17000                     # MPa
+  trabecular:
+    density_range: [0.8, 1.4]
+    E: 500
+  air:
+    density: 0.001
+    E: 0.001
+
+alignment:
+  voxel_size: 0.25     # Must match DICOM/TIFF resolution
+  padding: 5           # Voxels around mesh for safety
